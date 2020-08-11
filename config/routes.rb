@@ -1,4 +1,8 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  
+  mount Sidekiq::Web => '/sidekiq'
 
   post '/login', to: 'authentication#login'
   post '/signup', to: 'authentication#signup'

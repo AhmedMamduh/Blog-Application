@@ -18,6 +18,8 @@ gem 'bcrypt', '~> 3.1.7'
 # Json Web Tokenfor token based authentication
 gem 'jwt'
 
+gem 'acts-as-taggable-on', '~> 6.0'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

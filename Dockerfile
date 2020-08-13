@@ -12,6 +12,9 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler:2.1.4
 RUN bundle install
+RUN bundle exec rails db:create
+RUN bundle exec rails db:migrate
+RUN bundle exec rails db:seed
 
 COPY . ./
 

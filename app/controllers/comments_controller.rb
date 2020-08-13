@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
   end
 
   def update
-    return render json: {errors: "Not allow to update this comment"},
+    return render json: {errors: "You don't have access to update this comment"},
       status: 400 unless @comment.user_is_author?(@current_user.id)
     if @comment.update(comment_params)
       render json: @comment, status: :ok
@@ -24,7 +24,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    return render json: {errors: "Not allow to delete this comment"},
+    return render json: {errors: "You don't have access to delete this comment"},
       status: 400 unless @comment.user_is_author?(@current_user.id)
     @comment.destroy
     render json: {errors: "Deleted!"}, status: :ok

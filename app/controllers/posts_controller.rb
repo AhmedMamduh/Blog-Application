@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:update, :destroy]
 
   def index
-    @posts = Post.all.order("created_at DESC")
+    @posts = Post.paginate(page: params[:page], per_page: 10)
     render json: @posts, status: :ok
   end
 
@@ -17,7 +17,7 @@ class PostsController < ApplicationController
   end
 
   def update
-    return render json: {errors: "Not allow to update this post"},
+    return render json: {errors: "You don't have access to update this post"},
       status: 400 unless @post.user_is_author?(@current_user.id)
     if @post.update(post_params)
       render json: @post, status: :ok
@@ -27,7 +27,7 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    return render json: {errors: "Not allow to delete this post"},
+    return render json: {errors: "You don't have access to delete this post"},
       status: 400 unless @post.user_is_author?(@current_user.id)
     @post.destroy
     render json: {errors: "Deleted!"}, status: :ok

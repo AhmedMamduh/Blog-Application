@@ -1,28 +1,51 @@
-version: "3.8"
+version: "3.4"
 
 services:
-
-  database:
-    image: mysql:5.7
-    environment:
-      - MYSQL_ROOT_HOST=%
-      - MYSQL_ROOT_PASSWORD=ahmed
-    volumes:
-      - ./db_data:/var/lib/mysql
-
-  api:
-    build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    ports:
-      - "3000:3000"
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     depends_on:
       - database
+      - redis
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - gem_cache:/usr/local/bundle/gems
+      - node_modules:/app/node_modules
     environment:
       RAILS_ENV: development
-      MYSQL_DATABASE_NAME: BlogApplication_development
-      MYSQL_DATABASE_USER: root
-      MYSQL_DATABASE_PASSWORD:
-      DATABASE_HOST: database
+
+  database:
+    image: mysql:5.7.31
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+
+  redis:
+    image: redis:5.0.7
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - app
+      - database
+      - redis
+    volumes:
+      - .:/app
+      - gem_cache:/usr/local/bundle/gems
+      - node_modules:/app/node_modules
+    environment:
+      RAILS_ENV: development
+    entrypoint: ./entrypoints/sidekiq-entrypoint.sh
 
 volumes:
+  gem_cache:
   db_data:
+  node_modules:

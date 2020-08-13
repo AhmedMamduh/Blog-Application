@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.0'
+ruby '2.6.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.2'
@@ -20,6 +20,7 @@ gem 'jwt'
 
 gem 'acts-as-taggable-on', '~> 6.0'
 gem 'sidekiq', '~>6.1.1'
+gem 'bundler', '~> 2.1', '>= 2.1.4'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

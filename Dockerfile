@@ -1,21 +1,18 @@
-FROM ruby:2.6.0
+FROM ruby:2.6.6
+
+ENV BUNDLER_VERSION=2.1.4
+ENV LANG=C.UTF-8
 
 ENV HOME /home/rails/api
 
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs nodejs-legacy mysql-client vim
-RUN mkdir /var/run/mysql
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
 
-WORKDIR $HOME
+WORKDIR /app
 
-# Install gems
-ADD Gemfile* $HOME/
+COPY Gemfile Gemfile.lock ./
 RUN gem install bundler:2.1.4
 RUN bundle install
 
-Add . $HOME
+COPY . ./
 
-# Default command
-ENTRYPOINT ["bundle", "exec"]
-CMD ["bin/rake", "db:create"]
-CMD ["bin/rake", "db:migrate"]
-CMD ["rails", "server", "-b", "0.0.0.0"]
+ENTRYPOINT ["./entrypoints/docker-entrypoint.sh"]

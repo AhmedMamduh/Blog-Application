@@ -21,7 +21,6 @@ gem 'jwt'
 gem 'acts-as-taggable-on', '~> 6.0'
 gem 'sidekiq', '~>6.1.1'
 gem 'bundler', '~> 2.1', '>= 2.1.4'
-gem 'will_paginate', '~> 3.1', '>= 3.1.6'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

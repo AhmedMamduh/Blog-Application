@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:update, :destroy]
 
   def index
-    @posts = Post.paginate(page: params[:page], per_page: 10)
+    @posts = Post.all
     render json: @posts, status: :ok
   end
 
